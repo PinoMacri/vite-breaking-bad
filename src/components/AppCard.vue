@@ -15,11 +15,7 @@ export default {
 <template>
 
     <div v-for="pokemon in store.pokemons" :key="pokemon.id" class="cards text-center d-flex justify-content-center ">
-        <div id="cardImg" :class="
-        { 'Water': pokemon.type1 === 'Water' },
-        { 'Dark': pokemon.type1 === 'Dark' },
-        { 'Fighting': pokemon.type1 === 'Fighting' },
-        { 'Fire': pokemon.type1 === 'Fire' }"
+        <div id="cardImg" :class="pokemon.type1"
             class="d-flex flex-column justify-content-between align-items-center p-3">
             <div id="circleImg" class="d-flex align-items-center justify-content-center">
                 <img :src=pokemon.imageUrl alt="">
