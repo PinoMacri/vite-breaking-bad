@@ -1,10 +1,12 @@
 <script>
 import axios from "axios"
+
 import { store } from "./store"
 import AppPokedex from "./components/AppPokedex.vue"
 
 export default {
   components: {
+
     AppPokedex: AppPokedex,
   },
   data() {
