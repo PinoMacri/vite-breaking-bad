@@ -1,27 +1,35 @@
 <script>
-import { store } from "../store"
+import AppCard from "./AppCard.vue"
 export default {
     name: "AppPokedex",
-    data() {
-        return {
-            store: store,
-        }
-
+    components: {
+        AppCard: AppCard,
     }
 }
 </script>
 
 <template>
-    <div class="d-flex">
-        <div v-for="pokemon in store.pokemons" :key="pokemon.id" class="m-5 flew-wrap">
-            <div> {{`#${pokemon.number} `}} </div>
-            <div> <img :src=pokemon.imageUrl alt=""> </div>
-            <div>{{ pokemon.name }}</div>
-            <div>{{ pokemon.type1 }}</div>
+    <div id="pokedex" class="m-5 d-flex justify-content-center align-items-center">
+        <div id="contentCard" class="d-flex flex-wrap justify-content-center align-items-center ">
+            <app-card></app-card>
         </div>
     </div>
+
 </template>
 
-<style>
+<style scoped>
+#pokedex {
+    background-color: #DFDEDE;
+    height: 700px;
+    border-radius: 30px;
+}
 
+#contentCard {
+    height: 90%;
+    width: 96%;
+    background-image: url("../assets/kalos_pokedex_wallpaper_by_kalos.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow-y: scroll;
+}
 </style>
