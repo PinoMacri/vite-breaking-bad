@@ -24,8 +24,6 @@ export default {
             <div id="namePokemon">{{ pokemon.name }}</div>
             <div id="typePokemon">{{ pokemon.type1 }}</div>
         </div>
-
-
     </div>
 
 </template>
