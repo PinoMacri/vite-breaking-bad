@@ -5,10 +5,6 @@ export default {
     data() {
         return {
             store: store,
-            textblue: "Blue",
-            textyellow: "Yellow",
-            textbrown: "Brown",
-
 
         }
 
@@ -20,9 +16,10 @@ export default {
 
     <div v-for="pokemon in store.pokemons" :key="pokemon.id" class="cards text-center d-flex justify-content-center ">
         <div id="cardImg" :class="
-        { 'blue': pokemon.color === 'Blue' },
-        { 'yellow': pokemon.color === 'Yellow' },
-        { 'brown': pokemon.color === 'Brown' }"
+        { 'Water': pokemon.type1 === 'Water' },
+        { 'Dark': pokemon.type1 === 'Dark' },
+        { 'Fighting': pokemon.type1 === 'Fighting' },
+        { 'Fire': pokemon.type1 === 'Fire' }"
             class="d-flex flex-column justify-content-between align-items-center p-3">
             <div id="circleImg" class="d-flex align-items-center justify-content-center">
                 <img :src=pokemon.imageUrl alt="">
@@ -38,16 +35,25 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.blue {
+div {
+    color: white;
+}
+
+.Water {
     background-image: linear-gradient(white, rgb(0, 119, 255));
 }
 
-.yellow {
-    background-image: linear-gradient(white, goldenrod);
+.Dark {
+    background-image: linear-gradient(white, rgb(0, 0, 0));
 }
 
-.brown {
+.Fighting {
     background-image: linear-gradient(white, brown);
+}
+
+.Fire {
+    background-image: linear-gradient(white, red);
+    ;
 }
 
 
