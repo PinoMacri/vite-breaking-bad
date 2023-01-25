@@ -13,11 +13,29 @@ export default {
       store: store,
       pokemons: [],
       typePokemons: [],
-      selected: "",
+      selected: "Tutti i Pokemon",
       apiUri: "https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100",
     }
   },
   methods: {
+    fetchPokemonsStarted() {
+
+      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
+        .then((response) => {
+          store.pokemons = response.data.docs
+        })
+
+
+    },
+    fetchPokemonsStarted2() {
+
+      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
+        .then((response) => {
+          store.pokemons = response.data.docs
+        })
+      this.selected = "Tutti i Pokemon"
+
+    },
     fetchPokemons() {
 
       axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&eq[type1]=${this.selected}`)
@@ -29,14 +47,12 @@ export default {
   },
 
   created() {
-    axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
+    this.fetchPokemonsStarted()
+
+    axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1")
       .then((response) => {
-        store.pokemons = response.data.docs
-      }),
-      axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1")
-        .then((response) => {
-          store.typePokemons = response.data
-        })
+        store.typePokemons = response.data
+      })
   }
 }
 
@@ -52,23 +68,22 @@ export default {
       <div id="buttonGreen" class="styleButton m-2"></div>
     </div>
 
+    <div class="d-flex justify-content-center align-items-center tipoPokemon">
+      <img src="../public/Poké_Ball_icon.svg.png" alt="">
+      <label class="p-2" for="select">Inserisci il Tipo di Pokemon:</label>
+      <select class="px-2 py-1" v-model="selected" @change=fetchPokemons()>
+        <option class="" disabled>Tutti i Pokemon</option>
+        <option class="" v-for="typePokemon in store.typePokemons">{{ typePokemon }}</option>
+      </select>
+      <button class="m-2 px-2 py-1" v-on:click="fetchPokemonsStarted2()">Tutti i Pokemon</button>
+    </div>
+
     <div id="contenitoreLogoPokemon" class="mx-5 mt-4">
       <img id="logoPokemon" src="../public/pngegg.png" alt="">
     </div>
   </div>
-  <div class="d-flex justify-content-center">
-    <label for="select">Inserisci il Tipo di Pokemon:</label>
 
-    <select v-model="selected" @change=fetchPokemons()>
 
-      <option>
-        Tutti
-      </option>
-      <option v-for="typePokemon in store.typePokemons">{{ typePokemon }}</option>
-
-    </select>
-
-  </div>
   <app-pokedex></app-pokedex>
 </template>
 
@@ -76,6 +91,23 @@ export default {
 body {
   background-color: #C52919;
 
+}
+
+.tipoPokemon label {
+  font-weight: bold;
+}
+
+.tipoPokemon button {
+  border-radius: 20px;
+
+}
+
+select.px-2 {
+  border-radius: 20px;
+}
+
+.tipoPokemon img {
+  width: 50px;
 }
 
 #buttonBlue {

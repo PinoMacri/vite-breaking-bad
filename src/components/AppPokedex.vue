@@ -1,12 +1,12 @@
 <script>
-import AppCard from "./AppCard.vue";
-import AppTendina from "./AppTendina.vue"
+import AppCard from "./AppAllCardPokemon.vue";
+
 import { OhVueIcon } from "oh-vue-icons"
 export default {
     name: "AppPokedex",
     components: {
         AppCard: AppCard,
-        AppTendina: AppTendina,
+
         "v-icon": OhVueIcon,
     }, methods: {
         onChangeTendina() {
@@ -18,7 +18,7 @@ export default {
 
 <template>
 
-    <app-tendina @change-tendina="onChangeTendina"></app-tendina>
+
 
 
 
