@@ -15,7 +15,6 @@ export default {
 <template>
 
     <app-tendina></app-tendina>
-
     <div id="pokedex" class="m-5 d-flex justify-content-center align-items-center">
         <div id="contentCard" class="d-flex flex-wrap justify-content-center   p-3 ">
             <app-card></app-card>
