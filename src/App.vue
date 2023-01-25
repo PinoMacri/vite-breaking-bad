@@ -14,35 +14,50 @@ export default {
       pokemons: [],
       typePokemons: [],
       selected: "Tutti i Pokemon",
+      valueName: "",
       apiUri: "https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100",
     }
   },
   methods: {
     fetchPokemonsStarted() {
-
       axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
         .then((response) => {
           store.pokemons = response.data.docs
         })
-
-
     },
     fetchPokemonsStarted2() {
-
       axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
         .then((response) => {
           store.pokemons = response.data.docs
         })
       this.selected = "Tutti i Pokemon"
-
     },
     fetchPokemons() {
+      if (this.selected === 'Tutti i Pokemon') {
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
+          .then((response) => {
+            store.pokemons = response.data.docs
+          })
+      } else {
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&eq[type1]=${this.selected}`)
+          .then((response) => {
+            store.pokemons = response.data.docs
+          })
+      }
 
-      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&eq[type1]=${this.selected}`)
-        .then((response) => {
-          store.pokemons = response.data.docs
-        })
-
+    },
+    searchNamePokemons() {
+      if (this.selected === 'Tutti i Pokemon') {
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&q[name]=${this.valueName}`)
+          .then((response) => {
+            store.pokemons = response.data.docs
+          })
+      } else {
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
+          .then((response) => {
+            store.pokemons = response.data.docs
+          })
+      }
     },
   },
 
@@ -68,15 +83,27 @@ export default {
       <div id="buttonGreen" class="styleButton m-2"></div>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center tipoPokemon">
-      <img src="../public/Poké_Ball_icon.svg.png" alt="">
-      <label class="p-2" for="select">Inserisci il Tipo di Pokemon:</label>
-      <select class="px-2 py-1" v-model="selected" @change=fetchPokemons()>
-        <option class="" disabled>Tutti i Pokemon</option>
-        <option class="" v-for="typePokemon in store.typePokemons">{{ typePokemon }}</option>
-      </select>
-      <button class="m-2 px-2 py-1" v-on:click="fetchPokemonsStarted2()">Tutti i Pokemon</button>
+    <div class="mt-4">
+
+      <div class="d-flex  align-items-center tipoPokemon pb-2">
+        <img src="../public/Poké_Ball_icon.svg.png" alt="">
+        <label class="p-2" for="select">Inserisci il Tipo di Pokemon:</label>
+        <select class="px-2 py-1" v-model="selected" @change=fetchPokemons()>
+          <option class="">Tutti i Pokemon</option>
+          <option class="" v-for="typePokemon in store.typePokemons">{{ typePokemon }}</option>
+        </select>
+
+      </div>
+
+      <div class="d-flex  align-items-center tipoPokemon">
+        <img src="../public/Poké_Ball_icon.svg.png" alt="">
+        <label class="p-2" for="select">Inserisci il Nome del Pokemon:</label>
+        <input v-model="valueName" v-on:keyup="searchNamePokemons()" class="inputName" type="text">
+
+      </div>
+
     </div>
+
 
     <div id="contenitoreLogoPokemon" class="mx-5 mt-4">
       <img id="logoPokemon" src="../public/pngegg.png" alt="">
@@ -91,6 +118,10 @@ export default {
 body {
   background-color: #C52919;
 
+}
+
+.inputName {
+  border-radius: 20px;
 }
 
 .tipoPokemon label {
