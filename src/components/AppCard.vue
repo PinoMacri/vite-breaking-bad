@@ -14,7 +14,8 @@ export default {
 
 <template>
 
-    <div v-for="pokemon in store.pokemons" :key="pokemon.id" class="cards text-center d-flex justify-content-center ">
+    <div v-for="pokemon in store.pokemons" :key="pokemon.id"
+        class=" cards mb-4 mt-3 mx-3 text-center d-flex justify-content-center ">
         <div id="cardImg" :class="pokemon.type1"
             class="d-flex flex-column justify-content-between align-items-center p-3">
             <div id="circleImg" class="d-flex align-items-center justify-content-center">
@@ -50,21 +51,6 @@ div {
     ;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 img {
     width: 75px;
     height: 75px;
@@ -73,7 +59,7 @@ img {
 
 #cardImg {
     width: 220px;
-    height: 280px;
+    height: 320px;
     border: 1px solid white;
     border-radius: 30px;
 
@@ -89,6 +75,7 @@ img {
 #namePokemon {
     text-transform: uppercase;
     font-weight: bold;
+    font-size: 15px;
 }
 
 #typePokemon {
@@ -96,7 +83,8 @@ img {
 }
 
 .cards {
-    width: 20%;
+    width: 10%;
+    height: 320px;
 
 }
 </style>

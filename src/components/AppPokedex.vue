@@ -1,26 +1,28 @@
 <script>
 import AppCard from "./AppCard.vue";
+import AppTendina from "./AppTendina.vue"
 import { OhVueIcon } from "oh-vue-icons"
 export default {
     name: "AppPokedex",
     components: {
         AppCard: AppCard,
+        AppTendina: AppTendina,
         "v-icon": OhVueIcon,
     }
 }
 </script>
 
 <template>
+
+    <app-tendina></app-tendina>
+
     <div id="pokedex" class="m-5 d-flex justify-content-center align-items-center">
-        <div id="contentCard" class="d-flex flex-wrap justify-content-center align-items-center ">
+        <div id="contentCard" class="d-flex flex-wrap justify-content-center   p-3 ">
             <app-card></app-card>
             <v-icon id="iconPikachu" name="pi-pikachu" animation="ring" speed="slow" scale="5" />
             <v-icon id="iconVenusaur" name="pi-venusaur" animation="ring" speed="slow" scale="5" />
             <v-icon id="iconBlastoise" name="pi-blastoise" animation="ring" speed="slow" scale="5" />
             <v-icon id="iconCharizard" name="pi-charizard" animation="ring" speed="slow" scale="5" />
-        </div>
-        <div>
-
         </div>
     </div>
 
@@ -61,9 +63,7 @@ export default {
 #contentCard {
     height: 90%;
     width: 96%;
-    background-image: url("../assets/kalos_pokedex_wallpaper_by_kalos.jpg");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-color: rgba(0, 0, 0, 0.356);
     overflow-y: scroll;
 }
 </style>
