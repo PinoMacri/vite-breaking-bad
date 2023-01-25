@@ -8,16 +8,25 @@ export default {
         AppCard: AppCard,
         AppTendina: AppTendina,
         "v-icon": OhVueIcon,
+    }, methods: {
+        onChangeTendina() {
+            console.log("prova")
+        }
     }
 }
 </script>
 
 <template>
 
-    <app-tendina></app-tendina>
+    <app-tendina @change-tendina="onChangeTendina"></app-tendina>
+
+
+
     <div id="pokedex" class="m-5 d-flex justify-content-center align-items-center">
         <div id="contentCard" class="d-flex flex-wrap justify-content-center   p-3 ">
+
             <app-card></app-card>
+
             <v-icon id="iconPikachu" name="pi-pikachu" animation="ring" speed="slow" scale="5" />
             <v-icon id="iconVenusaur" name="pi-venusaur" animation="ring" speed="slow" scale="5" />
             <v-icon id="iconBlastoise" name="pi-blastoise" animation="ring" speed="slow" scale="5" />

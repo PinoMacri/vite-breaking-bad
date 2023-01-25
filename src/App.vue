@@ -13,10 +13,23 @@ export default {
       store: store,
       pokemons: [],
       typePokemons: [],
+      selected: "",
+      apiUri: "https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100",
     }
   },
+  methods: {
+    fetchPokemons() {
+
+      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&eq[type1]=${this.selected}`)
+        .then((response) => {
+          store.pokemons = response.data.docs
+        })
+
+    },
+  },
+
   created() {
-    axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100")
+    axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
       .then((response) => {
         store.pokemons = response.data.docs
       }),
@@ -31,6 +44,7 @@ export default {
 
 <template>
   <div class="d-flex justify-content-between mx-5">
+
     <div id="contenitoreBottoni" class="d-flex mt-3">
       <div id="buttonBlue" class="m-2"></div>
       <div id="buttonRed" class="styleButton m-2"></div>
@@ -41,6 +55,19 @@ export default {
     <div id="contenitoreLogoPokemon" class="mx-5 mt-4">
       <img id="logoPokemon" src="../public/pngegg.png" alt="">
     </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <label for="select">Inserisci il Tipo di Pokemon:</label>
+
+    <select v-model="selected" @change=fetchPokemons()>
+
+      <option>
+        Tutti
+      </option>
+      <option v-for="typePokemon in store.typePokemons">{{ typePokemon }}</option>
+
+    </select>
+
   </div>
   <app-pokedex></app-pokedex>
 </template>
