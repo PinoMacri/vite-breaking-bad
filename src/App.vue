@@ -73,14 +73,9 @@ export default {
 
     },
     searchNamePokemons() {
-      if (this.valueName === "") {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=16`)
-          .then((response) => {
-            store.pokemons = response.data.docs
-          })
-      }
+
       if (this.selected === 'Tutti i Pokemon' && this.valueName != "") {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&q[name]=${this.valueName}`)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=20&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
@@ -91,6 +86,7 @@ export default {
             store.pokemons = response.data.docs
           })
       }
+
     },
 
   },
