@@ -1,12 +1,16 @@
 <script>
 import axios from "axios"
-
+import AppCard from "./components/AppAllCardPokemon.vue";
+import { OhVueIcon } from "oh-vue-icons"
 import { store } from "./store"
-import AppPokedex from "./components/AppPokedex.vue"
+
 
 export default {
   components: {
-    AppPokedex: AppPokedex,
+
+    AppCard: AppCard,
+
+    "v-icon": OhVueIcon,
   },
   data() {
     return {
@@ -15,31 +19,53 @@ export default {
       typePokemons: [],
       selected: "Tutti i Pokemon",
       valueName: "",
-      apiUri: "https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100",
+      currentPage: 1,
+      apiUri: "https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?page=1",
+
+      page: 1,
+
+      pokePage: 16,
+
     }
   },
   methods: {
     fetchPokemonsStarted() {
-      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
+      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}`)
         .then((response) => {
           store.pokemons = response.data.docs
         })
     },
+    onChangeTendina(e) {
+      const clientHeight = e.target.clientHeight
+      const scrollHeight = e.target.scrollHeight
+      const scrollTop = e.target.scrollTop
+      if (scrollTop + clientHeight >= scrollHeight && this.selected === "Tutti i Pokemon" && !this.valueName) {
+        this.currentPage++
+        this.pokePage = parseInt(this.pokePage + 8)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}`)
+          .then((response) => {
+            store.pokemons = response.data.docs
+          })
+
+      }
+    },
+
     fetchPokemonsStarted2() {
-      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
+      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}`)
         .then((response) => {
           store.pokemons = response.data.docs
         })
       this.selected = "Tutti i Pokemon"
     },
     fetchPokemons() {
+      this.valueName = ''
       if (this.selected === 'Tutti i Pokemon') {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100`)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
       } else {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&eq[type1]=${this.selected}`)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&eq[type1]=${this.selected}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
@@ -48,17 +74,18 @@ export default {
     },
     searchNamePokemons() {
       if (this.selected === 'Tutti i Pokemon') {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&q[name]=${this.valueName}`)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
       } else {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=100&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
       }
     },
+
   },
 
   created() {
@@ -99,10 +126,17 @@ export default {
         <img src="../public/Poké_Ball_icon.svg.png" alt="">
         <label class="p-2" for="select">Inserisci il Nome del Pokemon:</label>
         <input v-model="valueName" v-on:keyup="searchNamePokemons()" class="inputName" type="text">
-
       </div>
 
+      <div class="d-flex my-2 d-flex align-items-center tipoPokemon">
+        <img src="../public/Poké_Ball_icon.svg.png" alt="">
+        <p class="m-0 p-2 allenatore">Scrolla in basso per vedere tutti i Pokèmon</p>
+
+      </div>
     </div>
+
+
+
 
 
     <div id="contenitoreLogoPokemon" class="mx-5 mt-4">
@@ -111,13 +145,29 @@ export default {
   </div>
 
 
-  <app-pokedex></app-pokedex>
+
+  <div id="pokedex" class="m-5 mt-1 d-flex justify-content-center align-items-center">
+
+    <div id="contentCard" class="d-flex flex-wrap justify-content-center  p-3 " @scroll="onChangeTendina">
+
+      <app-card></app-card>
+
+      <v-icon id="iconPikachu" name="pi-pikachu" animation="ring" speed="slow" scale="5" />
+      <v-icon id="iconVenusaur" name="pi-venusaur" animation="ring" speed="slow" scale="5" />
+      <v-icon id="iconBlastoise" name="pi-blastoise" animation="ring" speed="slow" scale="5" />
+      <v-icon id="iconCharizard" name="pi-charizard" animation="ring" speed="slow" scale="5" />
+    </div>
+  </div>
 </template>
 
 <style>
 body {
   background-color: #C52919;
 
+}
+
+.allenatore {
+  font-weight: bold;
 }
 
 .inputName {
@@ -170,5 +220,43 @@ select.px-2 {
 
 #logoPokemon {
   height: 100px;
+}
+
+#pokedex {
+  background-color: #DFDEDE;
+  height: 700px;
+  border-radius: 30px;
+  position: relative;
+}
+
+#iconPikachu {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+}
+
+#iconCharizard {
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+}
+
+#iconBlastoise {
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+}
+
+#iconVenusaur {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+}
+
+#contentCard {
+  height: 90%;
+  width: 96%;
+  background-color: rgba(0, 0, 0, 0.356);
+  overflow-y: scroll;
 }
 </style>

@@ -14,7 +14,7 @@ export default {
 
 <template>
 
-    <div v-for="pokemon in store.pokemons" :key="pokemon.id"
+    <div v-for="pokemon in store.pokemons" :key="pokemon._id"
         class=" cards mb-4 mt-3 mx-3 text-center d-flex justify-content-center ">
         <div :class="pokemon.type1" class="cardImg d-flex flex-column justify-content-between align-items-center p-3">
             <div class="circleImg d-flex align-items-center justify-content-center">
@@ -92,6 +92,18 @@ div {
 
 .Rock {
     background-image: linear-gradient(white, rgb(65, 63, 57));
+}
+
+.Dragon {
+    background-image: linear-gradient(white, rgb(26, 26, 75));
+}
+
+.Ghost {
+    background-image: linear-gradient(white, rgb(57, 57, 65));
+}
+
+.Flying {
+    background-image: linear-gradient(white, rgb(2, 133, 126));
 }
 
 img {
