@@ -73,12 +73,19 @@ export default {
 
     },
     searchNamePokemons() {
-      if (this.selected === 'Tutti i Pokemon') {
+      if (this.valueName === "") {
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=16`)
+          .then((response) => {
+            store.pokemons = response.data.docs
+          })
+      }
+      if (this.selected === 'Tutti i Pokemon' && this.valueName != "") {
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
-      } else {
+      }
+      else if (this.selected != 'Tutti i Pokemon' && this.valueName != "") {
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
@@ -125,7 +132,7 @@ export default {
       <div class="d-flex  align-items-center tipoPokemon">
         <img src="../public/Poké_Ball_icon.svg.png" alt="">
         <label class="p-2" for="select">Inserisci il Nome del Pokemon:</label>
-        <input v-model="valueName" v-on:keyup="searchNamePokemons()" class="inputName" type="text">
+        <input v-model.trim="valueName" v-on:keyup="searchNamePokemons()" class="inputName" type="text">
       </div>
 
       <div class="d-flex my-2 d-flex align-items-center tipoPokemon">
