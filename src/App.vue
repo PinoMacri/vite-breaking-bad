@@ -85,6 +85,13 @@ export default {
           .then((response) => {
             store.pokemons = response.data.docs
           })
+      } else if (this.valueName === "") {
+        this.fetchPokemonsStarted()
+
+        axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1")
+          .then((response) => {
+            store.typePokemons = response.data
+          })
       }
 
     },
