@@ -166,7 +166,7 @@ export default {
     </div>
 
     <div>
-      <p>Nel Pokedex ci sono attualmente {{ this.pokePage }} Pokemon su 1048 Totali !!!</p>
+      <p>Pokemon visualizzati attualmente sul Pokedex: {{ this.pokePage }} / 1048 </p>
     </div>
 
 
