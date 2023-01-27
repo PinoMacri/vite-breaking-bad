@@ -162,11 +162,12 @@ export default {
       <div class="d-flex my-2 d-flex align-items-center tipoPokemon">
         <img src="../public/Poké_Ball_icon.svg.png" alt="">
         <p class="m-0 p-2 allenatore">Scrolla in basso per vedere tutti i Pokèmon</p>
-
       </div>
     </div>
 
-
+    <div>
+      <p>Nel Pokedex ci sono attualmente {{ this.pokePage }} Pokemon su 1048 Totali !!!</p>
+    </div>
 
 
 
