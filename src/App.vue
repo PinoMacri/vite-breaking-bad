@@ -166,7 +166,8 @@ export default {
     </div>
 
     <div>
-      <p v-if="this.pokePage < 1048">Pokemon visualizzati attualmente sul Pokedex: {{ this.pokePage }} / 1048
+      <p v-if="this.pokePage < 1048">Pokemon visualizzati attualmente sul Pokedex: {{ this.store.pokemons.length }} /
+        1048
       </p>
       <p v-else>Complimenti, hai visualizzato nel tuo Pokedex tutti i 1048 Pokemon esistenti</p>
     </div>
