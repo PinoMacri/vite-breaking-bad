@@ -82,6 +82,7 @@ export default {
 
       }
       else if (this.selected != 'Tutti i Pokemon' && this.valueName != "") {
+
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
