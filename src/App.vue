@@ -39,13 +39,22 @@ export default {
       const clientHeight = e.target.clientHeight
       const scrollHeight = e.target.scrollHeight
       const scrollTop = e.target.scrollTop
-      if (scrollTop + clientHeight >= scrollHeight && this.selected === "Tutti i Pokemon") {
+      if (scrollTop + clientHeight >= scrollHeight) {
         this.currentPage++
         this.pokePage = parseInt(this.pokePage + 8)
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&q[name]=${this.valueName}`)
-          .then((response) => {
-            store.pokemons = response.data.docs
-          })
+        if (this.selected === 'Tutti i Pokemon') {
+          axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&q[name]=${this.valueName}`)
+            .then((response) => {
+              store.pokemons = response.data.docs
+            })
+        } else {
+          axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
+            .then((response) => {
+
+              store.pokemons = response.data.docs
+            })
+        }
+
 
       }
     },
@@ -59,13 +68,15 @@ export default {
     },
     fetchPokemons() {
       this.valueName = ''
+      store.pokemons = ""
+      this.pokePage = 16
       if (this.selected === 'Tutti i Pokemon') {
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
       } else {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&eq[type1]=${this.selected}`)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
@@ -73,7 +84,6 @@ export default {
 
     },
     searchNamePokemons() {
-
       if (this.selected === 'Tutti i Pokemon' && this.valueName != "") {
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&q[name]=${this.valueName}`)
           .then((response) => {
@@ -82,27 +92,31 @@ export default {
 
       }
       else if (this.selected != 'Tutti i Pokemon' && this.valueName != "") {
-
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
           .then((response) => {
+
             store.pokemons = response.data.docs
           })
       } else if (this.selected === 'Tutti i Pokemon' && this.valueName === "") {
-        store.pokemons = ""
-        this.fetchPokemonsStarted()
+
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=16&page=1`)
+          .then((response) => {
+
+            store.pokemons = response.data.docs
+          })
         axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1")
           .then((response) => {
+
             store.typePokemons = response.data
           })
       } else if (this.valueName === "") {
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=1048&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
           })
       }
 
     },
-
   },
 
   created() {
