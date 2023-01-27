@@ -24,6 +24,7 @@ export default {
       page: 1,
       pokePage: 16,
       pokeAdd: 8,
+      dinamicName: `&q[name]=${this.valueName}`
     }
   },
   methods: {
@@ -37,7 +38,7 @@ export default {
       const clientHeight = e.target.clientHeight
       const scrollHeight = e.target.scrollHeight
       const scrollTop = e.target.scrollTop
-
+      if (clientHeight === scrollHeight) return;
       if (scrollTop + clientHeight >= scrollHeight) {
         this.pokePage = parseInt(this.pokePage + this.pokeAdd)
         if (this.selected === 'Tutti i Pokemon') {
@@ -46,7 +47,7 @@ export default {
               store.pokemons = response.data.docs
             })
         } else if (this.selected != 'Tutti i Pokemon') {
-          axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
+          axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}`)
             .then((response) => {
               store.pokemons = response.data.docs
             })
