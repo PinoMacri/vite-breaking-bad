@@ -21,11 +21,8 @@ export default {
       valueName: "",
       currentPage: 1,
       apiUri: "https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?page=1",
-
       page: 1,
-
       pokePage: 16,
-
     }
   },
   methods: {
@@ -48,6 +45,7 @@ export default {
               store.pokemons = response.data.docs
             })
         } else {
+
           axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
             .then((response) => {
 
@@ -76,6 +74,7 @@ export default {
             store.pokemons = response.data.docs
           })
       } else {
+
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}`)
           .then((response) => {
             store.pokemons = response.data.docs
@@ -88,6 +87,7 @@ export default {
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
+
           })
 
       }
