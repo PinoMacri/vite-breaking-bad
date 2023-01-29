@@ -22,16 +22,17 @@ export default {
       currentPage: 1,
       apiUri: "https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?page=1",
       page: 1,
-      pokePage: 16,
-      pokeAdd: 8,
+      pokePage: 21,
+      pokeAdd: 14,
       dinamicName: `&q[name]=${this.valueName}`
     }
   },
   methods: {
     fetchPokemonsStarted() {
-      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=16`)
+      axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=21`)
         .then((response) => {
           store.pokemons = response.data.docs
+
         })
     },
     onChangeTendina(e) {
@@ -65,10 +66,10 @@ export default {
     fetchPokemons() {
       this.valueName = ''
       store.pokemons = ""
-      this.pokePage = 16
+      this.pokePage = 21
       if (this.selected === 'Tutti i Pokemon') {
         store.pokemons = ""
-        this.pokePage = 16
+        this.pokePage = 21
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}`)
           .then((response) => {
             store.pokemons = response.data.docs
@@ -84,7 +85,7 @@ export default {
     searchNamePokemons() {
       if (this.selected === 'Tutti i Pokemon' && this.valueName != "") {
         store.pokemons = ""
-        this.pokePage = 16
+        this.pokePage = 21
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
@@ -94,7 +95,7 @@ export default {
       }
       else if (this.selected != 'Tutti i Pokemon' && this.valueName != "") {
         store.pokemons = ""
-        this.pokePage = 16
+        this.pokePage = 21
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
           .then((response) => {
 
@@ -102,8 +103,8 @@ export default {
           })
       } else if (this.selected === 'Tutti i Pokemon' && this.valueName === "") {
         store.pokemons = ""
-        this.pokePage = 16
-        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=16&page=1`)
+        this.pokePage = 21
+        axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=21&page=1`)
           .then((response) => {
 
             store.pokemons = response.data.docs
@@ -115,7 +116,7 @@ export default {
           })
       } else if (this.valueName === "") {
         store.pokemons = ""
-        this.pokePage = 16
+        this.pokePage = 21
         axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}&q[name]=${this.valueName}`)
           .then((response) => {
             store.pokemons = response.data.docs
@@ -130,13 +131,13 @@ export default {
 
     axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1")
       .then((response) => {
-        store.typePokemons = response.data
+        store.pokemons = response.data.docs
+
       })
   }
 }
 
 </script>
-
 <template>
   <div class="d-flex justify-content-between mx-5">
 
@@ -171,8 +172,8 @@ export default {
       </div>
     </div>
 
-    <div>
-      <p v-if="this.pokePage < 1048">Pokemon visualizzati attualmente sul Pokedex: {{ this.store.pokemons.length }} /
+    <div class="contatore">
+      <p v-if="this.pokePage < 1048">Pokemon sul Pokedex: {{ this.store.pokemons.length }} /
         1048
       </p>
       <p v-else>Complimenti, hai visualizzato nel tuo Pokedex tutti i 1048 Pokemon esistenti</p>
@@ -191,6 +192,11 @@ export default {
 
     <div id="contentCard" class="d-flex flex-wrap justify-content-center  p-3 " @scroll="onChangeTendina">
 
+      <div v-if="store.pokemons.length < 1" class="loading text-center">
+        <img class="loader" src="../public/Poké_Ball_icon.svg.png" alt="">
+        <p>Caricamento in corso...</p>
+      </div>
+
       <app-card></app-card>
 
       <v-icon id="iconPikachu" name="pi-pikachu" animation="ring" speed="slow" scale="5" />
@@ -202,6 +208,37 @@ export default {
 </template>
 
 <style>
+.loading {
+  font-weight: bold;
+}
+
+.loader {
+  width: 100px;
+  height: 100px;
+  animation-name: ruota;
+  animation-duration: 1000ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes ruota {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.contatore {
+  font-weight: bold;
+  position: absolute;
+  right: 130px;
+  top: 208px;
+  z-index: 2;
+}
+
 body {
   background-color: #C52919;
 
@@ -237,8 +274,11 @@ select.px-2 {
   height: 120px;
   width: 120px;
   border-radius: 50%;
-  background-image: linear-gradient(to right, white, blue)
+  background: linear-gradient(to right, white, blue);
+
 }
+
+
 
 #buttonRed {
   background-image: linear-gradient(to right, white, red)
@@ -250,6 +290,20 @@ select.px-2 {
 
 #buttonGreen {
   background-image: linear-gradient(to right, white, green)
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .styleButton {
@@ -272,32 +326,32 @@ select.px-2 {
 
 #iconPikachu {
   position: absolute;
-  top: -30px;
+  top: -60px;
   left: -30px;
 }
 
 #iconCharizard {
   position: absolute;
-  bottom: -30px;
+  bottom: -60px;
   left: -30px;
 }
 
 #iconBlastoise {
   position: absolute;
-  bottom: -30px;
+  bottom: -60px;
   right: -30px;
 }
 
 #iconVenusaur {
   position: absolute;
-  top: -30px;
+  top: -60px;
   right: -30px;
 }
 
 #contentCard {
   height: 90%;
   width: 96%;
-  background-color: rgba(0, 0, 0, 0.356);
+  background-color: rgb(175, 165, 165);
   overflow-y: scroll;
 }
 </style>
