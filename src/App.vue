@@ -29,13 +29,17 @@ export default {
   },
   methods: {
     fetchPokemonsStarted() {
+      store.isLoading = true;
       axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=21`)
         .then((response) => {
           store.pokemons = response.data.docs
-
-        })
+        }).catch(error => { console.log(error) })
+        .then(() => {
+          store.isLoading = false;
+        });
     },
     onChangeTendina(e) {
+
       const clientHeight = e.target.clientHeight
       const scrollHeight = e.target.scrollHeight
       const scrollTop = e.target.scrollTop
@@ -43,11 +47,13 @@ export default {
       if (scrollTop + clientHeight >= scrollHeight) {
         this.pokePage = parseInt(this.pokePage + this.pokeAdd)
         if (this.selected === 'Tutti i Pokemon') {
+
           axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&q[name]=${this.valueName}`)
             .then((response) => {
               store.pokemons = response.data.docs
             })
         } else if (this.selected != 'Tutti i Pokemon') {
+
           axios.get(`https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=${this.pokePage}&eq[type1]=${this.selected}`)
             .then((response) => {
               store.pokemons = response.data.docs
@@ -131,7 +137,7 @@ export default {
 
     axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1")
       .then((response) => {
-        store.pokemons = response.data.docs
+        store.typePokemons = response.data
 
       })
   }
@@ -192,7 +198,7 @@ export default {
 
     <div id="contentCard" class="d-flex flex-wrap justify-content-center  p-3 " @scroll="onChangeTendina">
 
-      <div v-if="store.pokemons.length < 1" class="loading text-center">
+      <div v-if="store.isLoading" class="loading text-center">
         <img class="loader" src="../public/Poké_Ball_icon.svg.png" alt="">
         <p>Caricamento in corso...</p>
       </div>
