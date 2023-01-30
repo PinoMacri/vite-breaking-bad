@@ -202,6 +202,9 @@ export default {
         <img class="loader" src="../public/Poké_Ball_icon.svg.png" alt="">
         <p>Caricamento in corso...</p>
       </div>
+      <div v-if="store.pokemons.length === 0">
+        <p>Sembra che non esistano Pokèmon con questo nome !</p>
+      </div>
 
       <app-card></app-card>
 
@@ -214,6 +217,10 @@ export default {
 </template>
 
 <style>
+p {
+  font-weight: bold;
+}
+
 .loading {
   font-weight: bold;
 }
